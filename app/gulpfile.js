@@ -87,7 +87,6 @@ gulp.task('clean-css', function(){
 });
 
 gulp.task('js-external', ['clean-js-external'], function(){
-    console.log(config.sources.js.external);
     return gulp.src(config.sources.js.external)
         .pipe(plumber())
         .pipe(concat(config.targets.js.external.file))

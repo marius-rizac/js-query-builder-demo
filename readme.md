@@ -6,6 +6,8 @@
 npm install
 ```
 
+> `npm install` will trigger next command when finishes
+
 ### Compile js files
 
 ```
