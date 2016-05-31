@@ -1,7 +1,6 @@
 
-var sqlRules = 'name LIKE "karl%" AND in_stock = 0';
-
 function SprykerQueryBuilder(sqlQuery){
+    this.getFiltersUrl = '/filters.php';
     this.sql = sqlQuery;
     this.builder = '';
     this.init = function(){
@@ -12,7 +11,7 @@ function SprykerQueryBuilder(sqlQuery){
 
 SprykerQueryBuilder.prototype.createBuilder = function(){
     var self = this;
-    $.get('/filters.php').done(function(filters){
+    $.get(self.getFiltersUrl).done(function(filters){
         self.builder.queryBuilder({
             filters: filters
         });
@@ -24,17 +23,27 @@ SprykerQueryBuilder.prototype.saveQuery = function(){
     var result = this.builder.queryBuilder('getSQL', false);
 
     if (result.sql.length) {
-        alert(result.sql);
+        $('#sqlQuery').val(result.sql);
     }
 };
 
-$(function(){
+var sqlBuilder;
 
-    var sqlBuilder = new SprykerQueryBuilder(sqlRules);
+function loadSqlQuery(){
+    var sqlRules = $('#sqlQuery').val();
+    sqlBuilder = new SprykerQueryBuilder(sqlRules);
     sqlBuilder.init();
+}
+
+$(function(){
 
     $('#btn-get').on('click', function() {
         sqlBuilder.saveQuery();
     });
 
+    $('#reload').on('click', function(){
+        loadSqlQuery();
+    });
+
+    loadSqlQuery();
 });
